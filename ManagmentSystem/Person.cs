@@ -12,7 +12,7 @@
 
         public string ReturnDetails()
         {
-            return name + " - " + age;
+            return $"{name} - {age}";
         }
 
         public void setName(string name)

@@ -6,7 +6,7 @@
 
         public Manager()
         {
-            people = new List<Person>();
+            people = new List<Person>(){};
             PrintMenu();
         }
 
@@ -24,50 +24,159 @@
 
             bool tryParse = int.TryParse(Console.ReadLine(), out int menuOption);
 
-            if (!tryParse)
+            if (tryParse)
             {
-                Console.WriteLine(menuOption);
+                Console.WriteLine($"menuOption: {menuOption}");
 
                 if (menuOption == 1)
                 {
                     PrintAll();
-                } else if (menuOption == 2)
+                }
+                else if (menuOption == 2)
                 {
                     AddPerson();
-                } else if (menuOption == 3)
+                }
+                else if (menuOption == 3)
                 {
                     EditPerson();
-                } else if (menuOption == 4)
+                }
+                else if (menuOption == 4)
                 {
                     SearchPerson();
-                } else if (menuOption == 5)
+                }
+                else if (menuOption == 5)
                 {
                     RemovePerson();
                 }
+
+                PrintMenu();
             }
             else
             {
-                Console.WriteLine("Incorrect menu choice.");
-                Console.WriteLine("Press <Enter> to try again.");
-                Console.ReadLine();
-                Console.Clear();
+                OutputMessage("Incorrect menu choice.");
                 PrintMenu();
             }
-          
-            Console.WriteLine(menuOption);
         }
 
         public void PrintAll()
         {
-            people.ForEach(delegate (Person person)
+            StartOption("Printing all users: ");
+
+            if (people.Count == 0)
             {
-                Console.WriteLine(person.ReturnDetails());
-            });
+                Console.WriteLine("There are no users in the system, use option 1 to create a user");
+            }
+            else
+            {
+                for (int i = 0; i < people.Count(); i++)
+                {
+                    Console.WriteLine(i + 1 + ". " + people[i].ReturnDetails());
+                }
+
+            }
+
+            FinishOption();
+
+            //people.ForEach(delegate (Person person)
+            //int i = 0;
+            //{
+            //    i++;
+            //    Console.WriteLine($"{i}. {person.ReturnDetails()}");
+            //});
+
+            //people.ForEach((person) =>
+            //{
+            //    i++;
+            //    Console.WriteLine($"{i}. {person.ReturnDetails()}");
+            //});
+
+
+
         }
-        public void AddPerson() {}
-        public void EditPerson() {}
-        public void SearchPerson() {}
-        public void RemovePerson() {}
+        public void AddPerson()
+        {
+            StartOption("Adding a user");
+
+            try
+            {
+                Console.WriteLine("Enter a name: ");
+                string nameInput = Console.ReadLine();
+
+                Console.WriteLine("Enter an age: ");
+                int ageInput = Convert.ToInt32(Console.ReadLine());
+
+                if (!string.IsNullOrEmpty(nameInput))
+                {
+                    if (ageInput >= 0 && ageInput <= 150)
+                    {
+                        //Person person = new Person(nameInput, ageInput);
+                        people.Add(new Person(nameInput, ageInput));
+
+                        Console.WriteLine("Successfully added a person.");
+                        FinishOption();
+                    }
+                    else
+                    {
+                        OutputMessage("Enter a sensible age.");
+                        AddPerson();
+                    }
+                }
+                else
+                {
+                    OutputMessage("You didn't enter a name.");
+                    AddPerson();
+                }
+
+            }
+            catch (Exception)
+            {
+                OutputMessage("Something has went wrong");
+                AddPerson();
+            }
+
+        }
+        public void EditPerson()
+        {
+            StartOption("Editing a users:");
+            //check if people in system
+            // print all
+            // allow selection
+            // validate selection
+            // edit user, print message
+            // return back to menu
+
+            FinishOption();
+        }
+        public void SearchPerson()
+        {
+            StartOption("Searching users:");
+            FinishOption();
+        }
+        public void RemovePerson()
+        {
+            StartOption("Removing a user:");
+            FinishOption();
+        }
+
+        public void FinishOption()
+        {
+            Console.WriteLine(Environment.NewLine + "You have finished this option. Press <Enter> to return to the menu.");
+            Console.ReadLine();
+            Console.Clear();
+        }
+
+        public void StartOption(string message)
+        {
+            Console.Clear();
+            Console.WriteLine($"{message}" + Environment.NewLine);
+        }
+
+        public void OutputMessage(string message)
+        {
+            Console.WriteLine(message + " Press <Enter> to try again.");
+            Console.ReadLine();
+            Console.Clear();
+        }
 
     }
 }
