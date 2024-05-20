@@ -145,6 +145,11 @@
             // edit user, print message
             // return back to menu
 
+            if (people.Count == 0)
+            {
+                Console.WriteLine("Nu users to edit. Use the menu to add a user.");
+            }
+
             FinishOption();
         }
         public void SearchPerson()
