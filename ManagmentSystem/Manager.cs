@@ -68,14 +68,34 @@
             }
             else
             {
-                for (int i = 0; i < people.Count(); i++)
+                PrintAllUsers();
+
+                try
                 {
-                    Console.WriteLine(i + 1 + ". " + people[i].ReturnDetails());
+                    Console.Write("Enter an index: ");
+                    int indexSelection = Convert.ToInt32(Console.ReadLine());
+                    indexSelection--;
+
+                    if (indexSelection >= 0 && indexSelection <= people.Count - 1)
+                    {
+                        Console.WriteLine("Yey");
+                        FinishOption();
+                    } else
+                    {
+                        OutputMessage("Enter a valid index range");
+                        EditPerson();
+                    }
+
+                }
+                catch (Exception)
+                {
+                    OutputMessage("Something went wrong");
+                    EditPerson();
                 }
 
             }
 
-            FinishOption();
+            
 
             //people.ForEach(delegate (Person person)
             //int i = 0;
@@ -99,34 +119,19 @@
 
             try
             {
-                Console.WriteLine("Enter a name: ");
-                string nameInput = Console.ReadLine();
+                Person person = ReturnPerson();
 
-                Console.WriteLine("Enter an age: ");
-                int ageInput = Convert.ToInt32(Console.ReadLine());
-
-                if (!string.IsNullOrEmpty(nameInput))
+                if (person != null)
                 {
-                    if (ageInput >= 0 && ageInput <= 150)
-                    {
-                        //Person person = new Person(nameInput, ageInput);
-                        people.Add(new Person(nameInput, ageInput));
-
-                        Console.WriteLine("Successfully added a person.");
-                        FinishOption();
-                    }
-                    else
-                    {
-                        OutputMessage("Enter a sensible age.");
-                        AddPerson();
-                    }
+                    people.Add(person);
+                    Console.WriteLine("Successfully added a person.");
+                    FinishOption();
                 }
                 else
                 {
-                    OutputMessage("You didn't enter a name.");
+                    OutputMessage("Something has went wrong.");
                     AddPerson();
                 }
-
             }
             catch (Exception)
             {
@@ -148,6 +153,10 @@
             if (people.Count == 0)
             {
                 Console.WriteLine("Nu users to edit. Use the menu to add a user.");
+            }
+            else
+            {
+                PrintAllUsers();
             }
 
             FinishOption();
@@ -183,5 +192,39 @@
             Console.Clear();
         }
 
+        public void PrintAllUsers()
+        {
+            for (int i = 0; i < people.Count(); i++)
+            {
+                Console.WriteLine(i + 1 + ". " + people[i].ReturnDetails());
+            }
+        }
+
+        public Person ReturnPerson()
+        {
+         
+            Console.WriteLine("Enter a name: ");
+            string nameInput = Console.ReadLine();
+
+            Console.WriteLine("Enter an age: ");
+            int ageInput = Convert.ToInt32(Console.ReadLine());
+
+            if (!string.IsNullOrEmpty(nameInput))
+            {
+                if (ageInput >= 0 && ageInput <= 150)
+                {
+                    return new Person(nameInput, ageInput);
+                }
+                else
+                {
+                    OutputMessage("Enter a sensible age.");
+                }
+            }
+            else
+            {
+                OutputMessage("You didn't enter a name.");
+            }
+            return null;
+        }
     }
 }
